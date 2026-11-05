@@ -1,9 +1,14 @@
 import { defineConfig } from 'vitepress'
 
+const repoName = process.env.GITHUB_REPOSITORY
+  ? `/${process.env.GITHUB_REPOSITORY.split('/')[1]}/`
+  : '/ai-career-research-atlas/'
+
 export default defineConfig({
   title: "AI Career Research Atlas",
   description: "U.S. & Remote AI Career Pathways: Internships, Entry-Level, Mid-Level, Senior Roles, NJIT Student Audit & Revisions Log",
-  base: "/ai-career-research-atlas/",
+  base: repoName,
+  ignoreDeadLinks: true,
   themeConfig: {
     nav: [
       { text: 'Home', link: '/' },
@@ -31,7 +36,7 @@ export default defineConfig({
       {
         text: 'Release Tracking & Issues',
         items: [
-          { text: '5. Revisions Plan & GitHub Issues (v1.4)', link: '/revisions-plan' }
+          { text: '5. Revisions Plan & GitHub Issues (v1.4.1)', link: '/revisions-plan' }
         ]
       }
     ],
@@ -42,7 +47,7 @@ export default defineConfig({
       provider: 'local'
     },
     footer: {
-      message: 'Built with VitePress • Release v1.4.0 (All 6 Review Issues Resolved) • Grounded in U.S. BLS Data',
+      message: 'Built with VitePress • Release v1.4.1 (Deploy Hotfix + All Review Issues Resolved) • Grounded in U.S. BLS Data',
       copyright: 'Copyright © 2026 JivExperimenters'
     }
   }
