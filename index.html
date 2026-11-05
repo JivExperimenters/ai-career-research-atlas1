@@ -131,6 +131,9 @@
               <button data-goto="revisions" class="goto-btn px-4 py-2.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 font-semibold text-sm border border-emerald-500/40 transition">
                 5. View Revisions & Resolved GitHub Issues (v1.4)
               </button>
+              <button id="downloadIndexHtmlHeroBtn" class="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-sm shadow transition">
+                ⬇️ Download index.html (Fix GitHub 404 in 30s)
+              </button>
             </div>
           </div>
           <div class="lg:col-span-5">
@@ -467,6 +470,22 @@
       <div class="flex items-center justify-between border-b border-slate-800 pb-3">
         <h3 class="text-lg font-bold text-white">📦 GitHub Repository & VitePress Deployment Package (v1.4.0)</h3>
         <button id="closeRepoModalBtn" class="text-slate-400 hover:text-white text-sm px-2 py-1 rounded bg-slate-800">✕ Close</button>
+      </div>
+      <div class="p-4 rounded-xl bg-amber-500/15 border border-amber-500/40 text-xs space-y-2.5">
+        <div class="font-extrabold text-amber-300 text-sm">🚀 Seeing "404 There isn't a GitHub Pages site here"? Fix It in 3 Browser Clicks (No Terminal Needed!):</div>
+        <ol class="list-decimal list-inside text-slate-200 space-y-1">
+          <li>Click the two buttons below to download <strong><code>index.html</code></strong> and <strong><code>README.md</code></strong> directly to your computer.</li>
+          <li>On GitHub (<a href="https://github.com/JivExperimenters" target="_blank" class="text-sky-400 underline">github.com/JivExperimenters</a>), open your <strong><code>ai-career-research-atlas</code></strong> repo, click <strong>Add file → Upload files</strong>, drag <code>index.html</code> and <code>README.md</code> directly into the upload box (do NOT upload a <code>.zip</code> file itself!), and click <strong>Commit changes</strong>.</li>
+          <li>In your repo, go to <strong>Settings → Pages</strong> (left sidebar). Under <strong>Build and deployment → Source</strong>, select <strong>Deploy from a branch</strong>, choose branch <strong><code>main</code></strong> and folder <strong><code>/ (root)</code></strong>, and click <strong>Save</strong>. Refresh in 30 seconds!</li>
+        </ol>
+        <div class="flex flex-wrap gap-2 pt-1">
+          <button id="downloadIndexHtmlModalBtn" class="px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs shadow transition">
+            ⬇️ 1. Download index.html
+          </button>
+          <button id="downloadReadmeMdModalBtn" class="px-3.5 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-extrabold text-xs shadow transition">
+            ⬇️ 2. Download README.md
+          </button>
+        </div>
       </div>
       <div class="p-3.5 rounded-xl bg-rose-950/50 border border-rose-500/40 text-xs space-y-1.5">
         <div class="font-bold text-rose-300">🔧 Why GitHub Pages Deploy Failed & How v1.4.1 Fixes It:</div>
@@ -1371,6 +1390,32 @@ git push -u origin main --force</pre>
 
       document.getElementById("copyGhCliScriptBtn").addEventListener("click", () => {
         copyText("bash scripts/sync_github_issues.sh", "Copied gh issue sync command!");
+      });
+
+      function triggerDownload(filename, content, mimeType) {
+        const blob = new Blob([content], { type: mimeType });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        showToast("Downloaded " + filename + "!");
+      }
+
+      function downloadSelfAsIndexHtml() {
+        const fullHtml = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+        triggerDownload("index.html", fullHtml, "text/html;charset=utf-8");
+      }
+
+      const readmeContent = "# AI Career Research Atlas\n\n🌐 **Live GitHub Pages Website:** [https://jivexperimenters.github.io/ai-career-research-atlas/](https://jivexperimenters.github.io/ai-career-research-atlas/)\n📦 **GitHub Profile:** [https://github.com/JivExperimenters](https://github.com/JivExperimenters)\n\n## Overview\nA comprehensive U.S. & U.S.-Remote AI Career Research Atlas covering:\n1. **Internships & Entry-Level (New Grad) AI Roles** (Scout AI, Cohere, IBM Research, Allen Control Systems, LiteLLM, Applied Intuition, Roadrunner)\n2. **Mid-Level & Senior / Staff AI Roles** (TRM Labs, Databricks, 6sense, Blooming Health, Sequen AI, Quora)\n3. **NJIT Student Persona Walkthrough, Readiness Scorecard & Project-to-Role Matcher**\n4. **U.S. Bureau of Labor Statistics (BLS) Primary Sources & Custom Data Charts**\n5. **Site Revisions Plan & 7 Resolved GitHub Issues (Release v1.4.1)**\n";
+
+      document.getElementById("downloadIndexHtmlHeroBtn").addEventListener("click", downloadSelfAsIndexHtml);
+      document.getElementById("downloadIndexHtmlModalBtn").addEventListener("click", downloadSelfAsIndexHtml);
+      document.getElementById("downloadReadmeMdModalBtn").addEventListener("click", () => {
+        triggerDownload("README.md", readmeContent, "text/markdown;charset=utf-8");
       });
     });
   </script>
